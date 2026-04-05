@@ -9,7 +9,7 @@ const App = () => {
       <Header/>
     <main className="min-h-lvh">
       <div className="container mx-auto">
-        <h1> My app</h1>
+        <h1> MY FIRST MERN PROJECT</h1>
       </div>
        <Outlet/>
     </main>
