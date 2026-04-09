@@ -12,16 +12,16 @@ const cartSlice=createSlice({
             const item =action.payload;
             
             console.log(item)
-            // const existItem =state.cartItem.find((a)=>a._id === item._id);
+            const existItem =state.cartItem.find((a)=>a._id === item._id);
 
-            // if(existItem){
-            //     state.cartItem = state.cartItem.map((a)=>{
-            //         a._id === existItem._id ? item : a
-            //     })
-            // }else {
-            //     state.cartItem =[...state.cartItem, item]
-            // }
-            // localStorage.setItem("cart", JSON.stringify(state));
+            if(existItem){
+                state.cartItem = state.cartItem.map((a)=>{ a._id === existItem._id ? 
+                    item : a
+                })
+            }else {
+                state.cartItem =[...state.cartItem, item]
+            }
+            localStorage.setItem("cart", JSON.stringify(state));
         }
     }
 })
