@@ -1,12 +1,13 @@
 import { useParams, Link } from "react-router-dom"
 import {useGetProductsdetailsQuery} from "../slices/productApiSlices"
 import Rating from "../Components/Rating";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { addtocart } from "../slices/cartSlices";
 // import { useEffect, useState } from "react";
 // import axios from "axios"
 const ProductScreen = () => {
-  const { id: productid } = useParams();
-// const [product,setProduct]=useState({});
-
+ // const [product,setProduct]=useState({});
 // useEffect(()=>{
 //   const fetchProduct=async ()=>{
 //     const {data}= await axios.get(`http://localhost:5000/api/products/${productid}`)
@@ -14,7 +15,18 @@ const ProductScreen = () => {
 //   }
 //   fetchProduct()
 // },[productid])
+ const { id: productid } = useParams();
+ const [qty,setQty]=useState(1);
+ const dispatch=useDispatch();
+
   const {data:product, error, isLoading} = useGetProductsdetailsQuery(productid)
+
+  const addtocarthandler=()=>{
+    dispatch(addtocart({...product,qty}))
+  }
+
+
+
   if(isLoading) return <p> Loading</p>
   if (error) return <p>Error:{error.message}</p>
 
@@ -34,6 +46,29 @@ const ProductScreen = () => {
       <Link to="/">
         <button className="btn btn-neutral btn-sm mb-6">← Go Back</button>
       </Link>
+
+       <div className="card bg-base-100 w-96 shadow-sm">
+        <figure>
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-[500px]"
+          />
+        </figure>
+        <div className="card-body">
+          <h2 className="card-title">{product.name}</h2>
+          <p className="line-clamp-2 mb-5">
+           {product.description}
+          </p>
+          <div>
+            <Rating value={product.rating} text={product.numReviews}/>
+          </div>
+          <h3 className="card-title badge badge-primary">
+            {product.price}
+          </h3>
+         <p>{product.countInStock > 0 ? "Instocks" : "Out of stocks"}</p>
+        </div>
+      </div>
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
@@ -68,15 +103,21 @@ const ProductScreen = () => {
           {product.countInStock > 0 && (
             <div className="flex flex-col gap-1">
               <label className="font-semibold text-sm uppercase tracking-wide">Quantity</label>
-              <select className="select select-primary w-full max-w-xs">
+              <select className="select select-primary w-full max-w-xs" onChange={(e)=> setQty(Number(e.target.value))}>
                 {[...Array(product.countInStock).keys()].map((item) => (
                   <option key={item + 1}>{item + 1}</option>
                 ))}
               </select>
             </div>
           )}
+          <div className="card-action mt-6">
+            <button onClick={addtocarthandler }
+            disabled={product.countInStock === 0}
+            className="btn btn-primary w-full max-w-xs mt-2">Add to Cart
 
-          <button className="btn btn-primary w-full max-w-xs mt-2">Add to Cart</button>
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
