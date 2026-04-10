@@ -21,14 +21,29 @@ const ProductScreen = () => {
 
   const {data:product, error, isLoading} = useGetProductsdetailsQuery(productid)
 
-  const addtocarthandler=()=>{
-    dispatch(addtocart({...product,qty}))
+  // const addtocarthandler=()=>{
+  //   dispatch(addtocart({...product,qty}))
+  // }
+const addtocarthandler = () => {
+  if (!product || !product._id) {
+    console.error("Invalid product");
+    return;
   }
 
+  dispatch(addtocart({ ...product, qty }));
+};
 
 
   if(isLoading) return <p> Loading</p>
-  if (error) return <p>Error:{error.message}</p>
+  // if (error) return <p>Error:{error.message}</p>
+
+  if (error) {
+  return (
+    <p>
+      Error: {error?.data?.message || error?.error || "Something went wrong"}
+    </p>
+  );
+}
 
 
   if (!product) {
@@ -47,7 +62,7 @@ const ProductScreen = () => {
         <button className="btn btn-neutral btn-sm mb-6">← Go Back</button>
       </Link>
 
-       <div className="card bg-base-100 w-96 shadow-sm">
+       {/* <div className="card bg-base-100 w-96 shadow-sm"> */}
         <figure>
           <img
             src={product.image}
@@ -68,7 +83,7 @@ const ProductScreen = () => {
           </h3>
          <p>{product.countInStock > 0 ? "Instocks" : "Out of stocks"}</p>
         </div>
-      </div>
+      {/* </div> */}
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
@@ -103,11 +118,12 @@ const ProductScreen = () => {
           {product.countInStock > 0 && (
             <div className="flex flex-col gap-1">
               <label className="font-semibold text-sm uppercase tracking-wide">Quantity</label>
-              <select className="select select-primary w-full max-w-xs" onChange={(e)=> setQty(Number(e.target.value))}>
+              <select value={qty} onChange={(e)=> setQty(Number(e.target.value))} className="select select-primary w-full max-w-xs"> 
                 {[...Array(product.countInStock).keys()].map((item) => (
                   <option key={item + 1}>{item + 1}</option>
                 ))}
               </select>
+            
             </div>
           )}
           <div className="card-action mt-6">
