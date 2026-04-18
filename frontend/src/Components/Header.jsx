@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux";
 const Header = () => {
+
+  const { cartItem }=useSelector((state)=>state.cart)
+
+
+
   return (
    <>
    <div className="navbar bg-base-100 shadow-sm">
@@ -8,7 +14,11 @@ const Header = () => {
   </div>
   <div className="flex-none">
     <ul className="menu menu-horizontal px-1">
-<Link to="/card" className="badge badge-primary">Label</Link>      <li>
+<Link to="/card" className="badge badge-primary"><span>
+    Cart Count: {cartItem ?.length || 0}
+  </span>
+</Link>   
+   <li>
         <details>
           <summary>Jagan</summary>
           <ul className="bg-base-100 rounded-t-none p-2">

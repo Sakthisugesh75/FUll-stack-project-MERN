@@ -42,8 +42,8 @@ const cartSlice=createSlice({
 
                     state.totalprice =
                     Number(state.itemPrice) +
-                    Number(state.shippingprice) +
-                    Number(state.totalprice)
+                    Number(state.shippingprice) 
+    
 
             localStorage.setItem("cart", JSON.stringify(state));
         }
