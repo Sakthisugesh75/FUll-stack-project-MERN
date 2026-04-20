@@ -74,14 +74,14 @@ console.log(cartItem);
                         Price: ${item.price}
                       </p>
                       {item.countInStock > 0 && (
-                        <div>
+                        <div className="flex gap-2 items-center">
                         <label htmlFor="quantity">
                           Qty:
                            </label>  
                            <select value={item.qty}
                              onChange={(e)=>
                               addtocartHandler(item,Number(e.target.value))
-                              }>
+                              }className="select select-boarded">
                             {
                               [...Array(item.countInStock).keys()].map((x)=>(
                                 <option key={x+1}>
@@ -99,6 +99,19 @@ console.log(cartItem);
               </div>
             ))}
           </div>
+            <div className="md:col-span-1">
+              <div className="card bg-base-200 shadow-lg">
+                <div className="card-body">
+                  <div className="card-title text-2xl font-bold text-secondary mb-3">
+
+                  Subtotal :
+
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
         </div>
 
         }    
