@@ -46,9 +46,39 @@ const cartSlice=createSlice({
     
 
             localStorage.setItem("cart", JSON.stringify(state));
+        },
+        removeFromCart:(state,action)=> {
+            state.cartItem =state.cartItem.filter((x)=> x._id !== action.payload);
+
+              /// calculate item price acc is called accumulator 
+                
+                state.itemPrice =state.cartItem.reduce(
+                    (acc, item)=> acc + item.price * item.qty, 0)
+                    //  (acc, item)=> acc + item.price * item.qty, 0)
+                // Here accumulator starts from  0 as of now we started
+
+                    /// shipping price goes here
+
+                    state.shippingprice=  state.itemPrice > 100 ? 0 :20;
+
+
+                    ///GST PRICE ADD
+                    state.taxprice = Number(0.18 * state.itemPrice)
+
+
+                    ////TotalPrice 
+
+                    state.totalprice =
+                    Number(state.itemPrice) +
+                    Number(state.shippingprice) 
+    
+
+            localStorage.setItem("cart", JSON.stringify(state));
+
+
         }
     }
 })
 
-export const {addtocart} = cartSlice.actions;
+export const {addtocart,removeFromCart} = cartSlice.actions;
 export default cartSlice.reducer;

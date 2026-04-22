@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom";
-import { addtocart } from "../slices/cartSlices"
+import { Link,useNavigate } from "react-router-dom";
+import { addtocart,removeFromCart } from "../slices/cartSlices"
+import { MdDelete } from "react-icons/md";
 
 const CardScreen = () => {
 
 const dispatch=useDispatch();
 const {cartItem}= useSelector((state)=>state.cart)
+const navigate =useNavigate();
 
 console.log(cartItem);
 
@@ -14,6 +16,13 @@ console.log(cartItem);
   dispatch(addtocart({...item,qty}))
  }
 
+const removeFromCartHandler =(id)=> {
+  dispatch(removeFromCart(id));
+}
+const checkOutHandler =()=>{
+  
+  navigate("/login?redirect=/shipping")
+}
   return (
       <div className="container mx-auto px-4 mt-4">
           <h1 className="text-5xl font-bold mb-10 text-center">
@@ -92,6 +101,11 @@ console.log(cartItem);
                            </select>
                         </div>
                       )}
+                      <button className="btn btn-error ml-auto" 
+                      onClick={()=>removeFromCartHandler(item._id)}
+                      >
+                          <MdDelete color="white" size="20px"/>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -102,12 +116,23 @@ console.log(cartItem);
             <div className="md:col-span-1">
               <div className="card bg-base-200 shadow-lg">
                 <div className="card-body">
-                  <div className="card-title text-2xl font-bold text-secondary mb-3">
+                  <h2 className="card-title text-2xl font-bold text-secondary mb-3">
 
                   Subtotal :
+                    {
+                      cartItem.reduce((acc, item)=> acc + item.qty,0)
+                    }
 
-
-                  </div>
+                  </h2>
+                  <h2 className="cart-title text-xl font-semibold mb-3">
+                    TotalPrice : $
+                    {
+                      cartItem.reduce((acc,item)=>acc + item.qty * item.price,0).toFixed(2)
+                    }
+                  </h2>
+                  <button className="btn btn-success btn-block" onClick={checkOutHandler}>
+                    Procedd to checkout
+                  </button>
                 </div>
 
               </div>
