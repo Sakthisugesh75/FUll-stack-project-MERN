@@ -6,12 +6,15 @@ import userRoutes from "./routes/userRoutes.js"
 import {notFound,errorHandler} from "./middleware/errormiddleware.js"
 
 const app=express();
-app.use(log);
 app.use(cors());
-
 connectDB();
-const port =5000;
 
+
+
+//Body parser 
+app.use(express.json());
+app.use(express.urlencoded({extended:true }))
+const port =5000;
 app.get("/",(req,res)=>{
     res.send("Hello World")
 })

@@ -2,9 +2,16 @@ import asyncHandler from "../middleware/asyncHandler.js"
 import User from "../model/usermodel.js"
 
 
-const authUser=asyncHandler(async(req,res)=>{
-    res.send("Auth User")
-})
+const authUser = asyncHandler(async (req, res) => {
+    console.log("Headers:", req.headers);
+    console.log("Body:", req.body);
+    console.log("Email:", req.body.email);
+    console.log("Password:", req.body.password);
+
+    const { email, password } = req.body;
+
+    res.json({ email, password }); // just return what we received
+});
 
 const registerUser =asyncHandler(async(req,res)=>{
     res.send("Registered User")
