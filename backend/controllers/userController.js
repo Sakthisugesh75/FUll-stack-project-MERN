@@ -1,16 +1,27 @@
 import asyncHandler from "../middleware/asyncHandler.js"
-import User from "../model/usermodel.js"
+import User from "../model/usermodel.js";
 
 
 const authUser = asyncHandler(async (req, res) => {
-    console.log("Headers:", req.headers);
-    console.log("Body:", req.body);
-    console.log("Email:", req.body.email);
-    console.log("Password:", req.body.password);
+  
 
     const { email, password } = req.body;
+    const user =await User.findOne({ email })
 
-    res.json({ email, password }); // just return what we received
+    if(user && (await user.matchPassword(password))){
+        res.status(200).json({
+            id:user_id,
+            name:user.name,
+            email:user.email,
+            isAdmin:user.isAdmin
+        })
+    }else{
+        res.status(401);
+        throw new Error("Invalid Email or password")
+    }
+     
+    console.log(user)
+    res.send("Auth User"); // ✅ only one response
 });
 
 const registerUser =asyncHandler(async(req,res)=>{

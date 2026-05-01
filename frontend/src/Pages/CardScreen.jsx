@@ -7,11 +7,11 @@ const CartScreen = () => {
   const dispatch = useDispatch();
   const { cartItem } = useSelector((state) => state.cart); // ✅ plural
   const navigate = useNavigate();
-=======
+
 import { useDispatch, useSelector } from "react-redux"
 import {}
 const CardScreen = () => {
->>>>>>> Stashed changes
+
 
   const addtocartHandler = (item, qty) => {
     dispatch(addtocart({ ...item, qty }));
