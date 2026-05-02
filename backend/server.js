@@ -4,7 +4,7 @@ import connectDB from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js"
 import {notFound,errorHandler} from "./middleware/errormiddleware.js"
-
+import cookieParser from "cookie-parser"
 const app=express();
 
 connectDB();
@@ -13,8 +13,11 @@ connectDB();
 
 //Body parser 
 app.use(cors({
-    origin: "http://localhost:5173"
+    origin: "http://localhost:5173",
+    credentials:true
 }));
+
+app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({extended:true }))
 

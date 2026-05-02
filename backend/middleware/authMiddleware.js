@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import asyncHandler from "./asyncHandler"
+import asyncHandler from "./asyncHandler.js"
 import User from "../model/usermodel.js"
 
 
@@ -27,3 +27,14 @@ try{
 
 
 //Admin Routes
+const admin =(req,res,next)=>{
+    if(req.User && req.User.isAdmin){
+        next()
+    }else{
+        res.status(401);
+        throw new Error("Not Auth as admin")
+    }
+}
+
+export {protect,admin}
+
