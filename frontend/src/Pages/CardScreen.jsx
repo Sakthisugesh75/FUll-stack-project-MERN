@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { addtocart, removeFromCart } from "../slices/cartSlices"; // ✅ added
@@ -8,9 +8,6 @@ const CartScreen = () => {
   const { cartItem } = useSelector((state) => state.cart); // ✅ plural
   const navigate = useNavigate();
 
-import { useDispatch, useSelector } from "react-redux"
-import {}
-const CardScreen = () => {
 
 
   const addtocartHandler = (item, qty) => {
