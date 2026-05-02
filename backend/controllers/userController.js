@@ -1,6 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js"
 import User from "../model/usermodel.js";
-
+import jwt from "jsonwebtoken";
 
 const authUser = asyncHandler(async (req, res) => {
   
@@ -9,6 +9,19 @@ const authUser = asyncHandler(async (req, res) => {
     const user =await User.findOne({ email })
 
     if(user && (await user.matchPassword(password))){
+
+
+const token =jwt.sign({userId:user._id},"yrtuenfsdkbs",{expiresIn:"30d"})
+
+/// set Jwt as http
+
+res.cookie("jwt",token,{
+    httpOnly:true,
+    secure:false,
+    samesite:"strict",
+    maxAge: 30*24*60*60*1000
+})
+
         res.status(200).json({
             id:user_id,
             name:user.name,
@@ -25,6 +38,18 @@ const authUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser =asyncHandler(async(req,res)=>{
+const { name, email, password } = req.body; 
+ const userExist = await User.findOne({ email });
+if(userExist){
+    res.status(400);
+    throw new Error("User Already Exist")
+}
+const user =await User.create({
+    name,
+    email,
+    password
+})
+     
     res.send("Registered User")
 })
 
