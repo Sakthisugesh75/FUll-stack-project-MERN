@@ -2,7 +2,8 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useLoginMutation } from "../slices/userApiSlices"
- 
+ import { toast } from "react-toastify"
+ import {setCrendentials} from "../slices/authSlices"
 const LoginScreen = () => {
   const [email,setEmail]=useState("")
   const[password,setPassword]=useState("")
@@ -19,12 +20,13 @@ const LoginScreen = () => {
       alert("please enter the field");
     }else{
       try{ 
-        const res =await login({email,password});
-        navigate("/ ")
+        const res =await login({email,password}).unwrap(); 
+         dispatch(setCrendentials({...res}))
+        navigate("/")
 
       }catch(error)
       {
-        console.log(error)
+        toast.error (error?.data?.message)
       }
     }
   }

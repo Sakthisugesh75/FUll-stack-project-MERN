@@ -8,8 +8,7 @@ export const userApiSlices =apislices.injectEndpoints({
                 url:`${USERS_URL}/login`,
                 method:"POST",
                 body:data,
-                credentials:true
-            })
+                credentials: 'include',             })
         })
     }
 
