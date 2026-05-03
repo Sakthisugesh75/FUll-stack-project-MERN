@@ -19,8 +19,8 @@ const LoginScreen = () => {
       alert("please enter the field");
     }else{
       try{ 
-        const res =await login({email,password}).unwrap();
-        navigate("/")
+        const res =await login({email,password});
+        navigate("/ ")
 
       }catch(error)
       {
