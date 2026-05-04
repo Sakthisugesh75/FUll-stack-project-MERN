@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useLoginMutation } from "../slices/userApiSlices"
@@ -11,13 +11,21 @@ const LoginScreen = () => {
   const dispatch=useDispatch();
   const navigate=useNavigate();
 
-  const[login,{isLoading}]=useLoginMutation();
+  const[loginApicall,{isLoading}]=useLoginMutation();
 const {userInfo}=useSelector((state)=>state.auth)
 
  const { search }=useLocation()
  const sp =new URLSearchParams(search);
 
- const redirect =sp.get
+ const redirect =sp.get("redirect") || "/"
+
+useEffect(()=>{
+  if(userInfo){
+    navigate(redirect);
+  }
+},[userInfo,redirect])
+
+   
   const submitHandler= async(e)=>{
     e.preventDefault();
 
@@ -25,7 +33,7 @@ const {userInfo}=useSelector((state)=>state.auth)
       alert("please enter the field");
     }else{
       try{ 
-        const res =await login({email,password}).unwrap(); 
+        const res =await loginApicall({email,password}).unwrap(); 
          dispatch(setCrendentials({...res}))
         navigate("/")
 
