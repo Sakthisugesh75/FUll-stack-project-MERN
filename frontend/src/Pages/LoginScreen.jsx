@@ -12,7 +12,12 @@ const LoginScreen = () => {
   const navigate=useNavigate();
 
   const[login,{isLoading}]=useLoginMutation();
- 
+const {userInfo}=useSelector((state)=>state.auth)
+
+ const { search }=useLocation()
+ const sp =new URLSearchParams(search);
+
+ const redirect =sp.get
   const submitHandler= async(e)=>{
     e.preventDefault();
 
