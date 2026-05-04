@@ -11,7 +11,6 @@ const initialState ={
          reducers:{
             setCrendentials:(state,action)=>{
                 
-                console.log(action.payload);
                 
 
                 state.userInfo=action.payload;

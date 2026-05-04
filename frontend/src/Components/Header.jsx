@@ -1,9 +1,25 @@
-import { Link } from "react-router-dom"
-import { useSelector } from "react-redux";
+import { Link,useNavigate } from "react-router-dom"
+import { useSelector,useDispatch } from "react-redux";
+import { useLogoutMutation } from "../slices/userApiSlices"
 const Header = () => {
 
   const { cartItem }=useSelector((state)=>state.cart)
+const { userInfo }=useSelector((state)=>state.auth)
 
+const navigate=useNavigate()
+const dispatch=useDispatch();
+
+const [ LogoutApicall ]=useLogoutMutation();
+
+const logoutHandler=async()=>{
+  try{
+    await LogoutApicall();
+    navigate("/login")
+  }catch{
+  console.log(error)
+  }
+}
+console.log(userInfo);
 
 
   return (
@@ -19,15 +35,19 @@ const Header = () => {
   </span>
 </Link>   
    <li>
-        <details>
-          <summary>Jagan</summary>
+      {userInfo ? (
+  <details>
+          <summary>{userInfo.name}</summary>
           <ul className="bg-base-100 rounded-t-none p-2">
             <li><a>Light</a></li>
             <li><a>Profile</a></li>
-            <li><a>Logout</a></li>
+            <li onClick={logoutHandler}><a>Logout</a></li>
 
           </ul>
         </details>
+      )  : (
+        <li><Link to="/login">SignIn</Link> </li>
+      )}
       </li>
     </ul>
   </div>
